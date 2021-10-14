@@ -12,11 +12,11 @@ ENV PACKAGE_DIR $GOPATH/src/$PACKAGE
 #install go and godep, then compile cloud-torrent using godep, then wipe build tools
 RUN apk update && \
     apk add git go gzip && \
-    go get github.com/tools/godep && \
+    go get -u github.com/golang/dep/cmd/dep && \
     mkdir -p $PACKAGE_DIR && \
     git clone https://$PACKAGE.git $PACKAGE_DIR && \
     cd $PACKAGE_DIR && \
-    godep go build -ldflags "-X main.VERSION=$(git describe --abbrev=0 --tags)" -o /usr/local/bin/cloud-torrent && \
+    dep go build -ldflags "-X main.VERSION=$(git describe --abbrev=0 --tags)" -o /usr/local/bin/cloud-torrent && \
     cd /tmp && \
     rm -rf $GOPATH && \
     apk del git go gzip && \
